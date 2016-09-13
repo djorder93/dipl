@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MedsestraCreateDlg" widgetVar="MedsestraCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateMedsestraTitle}">
+            <h:form id="MedsestraCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{medsestraController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateMedsestraLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{medsestraController.selected.id}" title="#{bundle.CreateMedsestraTitle_id}" required="true" requiredMessage="#{bundle.CreateMedsestraRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateMedsestraLabel_ime}" for="ime" />
+                        <p:inputText id="ime" value="#{medsestraController.selected.ime}" title="#{bundle.CreateMedsestraTitle_ime}" />
+                        <p:outputLabel value="#{bundle.CreateMedsestraLabel_prezime}" for="prezime" />
+                        <p:inputText id="prezime" value="#{medsestraController.selected.prezime}" title="#{bundle.CreateMedsestraTitle_prezime}" />
+                        <p:outputLabel value="#{bundle.CreateMedsestraLabel_username}" for="username" />
+                        <p:inputText id="username" value="#{medsestraController.selected.username}" title="#{bundle.CreateMedsestraTitle_username}" />
+                        <p:outputLabel value="#{bundle.CreateMedsestraLabel_password}" for="password" />
+                        <p:inputText id="password" value="#{medsestraController.selected.password}" title="#{bundle.CreateMedsestraTitle_password}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{medsestraController.create}" value="#{bundle.Save}" update="display,:MedsestraListForm:datalist,:growl" oncomplete="handleSubmit(args,'MedsestraCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="MedsestraCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

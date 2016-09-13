@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PacijentEditDlg" widgetVar="PacijentEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPacijentTitle}">
+            <h:form id="PacijentEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pacijentController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pacijentController.selected.id}" title="#{bundle.EditPacijentTitle_id}" required="true" requiredMessage="#{bundle.EditPacijentRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_jmbg}" for="jmbg" />
+                        <p:inputText id="jmbg" value="#{pacijentController.selected.jmbg}" title="#{bundle.EditPacijentTitle_jmbg}" />
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_ime}" for="ime" />
+                        <p:inputText id="ime" value="#{pacijentController.selected.ime}" title="#{bundle.EditPacijentTitle_ime}" />
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_prezime}" for="prezime" />
+                        <p:inputText id="prezime" value="#{pacijentController.selected.prezime}" title="#{bundle.EditPacijentTitle_prezime}" />
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_telefon}" for="telefon" />
+                        <p:inputText id="telefon" value="#{pacijentController.selected.telefon}" title="#{bundle.EditPacijentTitle_telefon}" />
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_datumrodjenja}" for="datumrodjenja" />
+                        <p:calendar id="datumrodjenja" pattern="MM/dd/yyyy HH:mm:ss" value="#{pacijentController.selected.datumrodjenja}" title="#{bundle.EditPacijentTitle_datumrodjenja}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_doktor}" for="doktor" />
+                        <p:selectOneMenu id="doktor" value="#{pacijentController.selected.doktor}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{doktorController.itemsAvailableSelectOne}"
+                                           var="doktorItem"
+                                           itemValue="#{doktorItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditPacijentLabel_medSestra}" for="medSestra" />
+                        <p:selectOneMenu id="medSestra" value="#{pacijentController.selected.medSestra}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{medsestraController.itemsAvailableSelectOne}"
+                                           var="medSestraItem"
+                                           itemValue="#{medSestraItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pacijentController.update}" value="#{bundle.Save}" update="display,:PacijentListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PacijentEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PacijentEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

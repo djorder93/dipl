@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/stranice/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListPacijentTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="PacijentListForm">
+                <p:panel>
+                    <f:facet name="header">
+                        <p:commandButton id="toggler" type="button" value="Columns"  icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="datalist" trigger="toggler" />
+                    </f:facet>
+                    <p:dataTable id="datalist" value="#{pacijentController.items}" var="item" 
+                                 selectionMode="single" selection="#{pacijentController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 widgetVar="pacijenti"
+                                 emptyMessage="No cars found with given criteria"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 reflow="true"
+                                 >
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('pacijenti').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column  filterBy="#{item.id}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column  filterBy="#{item.jmbg}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_jmbg}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.jmbg}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.ime}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_ime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ime}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.prezime}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_prezime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prezime}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.telefon}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_telefon}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefon}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.datumrodjenja}" filterMatchMode="contains">
+                              <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPacijentTitle_datumrodjenja}"/>
+                            </f:facet>
+                            <f:facet name="filter">
+                                <p:calendar yearRange="c-100:c+100" navigator="true" pattern="dd/MM/yyyy" onkeyup="PF('pacijenti').filter()">
+                                    <p:ajax event="dateSelect" listener="#{pacijentController.datFilter}"/>
+                                </p:calendar>
+                            </f:facet>
+                            <h:outputText value="#{item.datFilter}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </p:column >
+                        <p:column filterBy="#{item.doktor}"  filterMatchMode="contains">
+                            <f:facet name="header">
+                               <h:outputText value="#{bundle.ListPacijentTitle_doktor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.doktor.toString()}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{pacijentController.prepareCreate}" update=":PacijentCreateForm" oncomplete="PF('PacijentCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PacijentViewForm" oncomplete="PF('PacijentViewDialog').show()" disabled="#{empty pacijentController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PacijentEditForm" oncomplete="PF('PacijentEditDialog').show()" disabled="#{empty pacijentController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{pacijentController.destroy}" update=":growl,datalist" disabled="#{empty pacijentController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

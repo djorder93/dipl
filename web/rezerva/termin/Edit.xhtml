@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TerminEditDlg" widgetVar="TerminEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTerminTitle}">
+            <h:form id="TerminEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{terminController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTerminLabel_terminPK_datum}" for="terminPK_datum" />
+                        <p:calendar id="terminPK_datum" pattern="MM/dd/yyyy HH:mm:ss" value="#{terminController.selected.terminPK.datum}" title="#{bundle.EditTerminTitle_terminPK_datum}" required="true" requiredMessage="#{bundle.EditTerminRequiredMessage_terminPK_datum}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditTerminLabel_pacijent1}" for="pacijent1" />
+                        <p:selectOneMenu id="pacijent1" value="#{terminController.selected.pacijent1}" required="true" requiredMessage="#{bundle.EditTerminRequiredMessage_pacijent1}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{pacijentController.itemsAvailableSelectOne}"
+                                           var="pacijent1Item"
+                                           itemValue="#{pacijent1Item}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditTerminLabel_medsestra}" for="medsestra" />
+                        <p:selectOneMenu id="medsestra" value="#{terminController.selected.medsestra}" required="true" requiredMessage="#{bundle.EditTerminRequiredMessage_medsestra}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{medsestraController.itemsAvailableSelectOne}"
+                                           var="medsestraItem"
+                                           itemValue="#{medsestraItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{terminController.update}" value="#{bundle.Save}" update="display,:TerminListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TerminEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TerminEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

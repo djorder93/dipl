@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TerminViewDlg" widgetVar="TerminViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTerminTitle}">
+            <h:form id="TerminViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{terminController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTerminLabel_terminPK_datum}"/>
+                        <h:outputText value="#{terminController.selected.terminPK.datum}" title="#{bundle.ViewTerminTitle_terminPK_datum}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+2" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewTerminLabel_medsestra}"/>
+                        <h:outputText value="#{terminController.selected.medsestra.toString()}" title="#{bundle.ViewTerminTitle_medsestra}"/>
+                        <h:outputText value="#{bundle.ViewTerminLabel_pacijent1}"/>
+                        <h:outputText value="#{terminController.selected.pacijent1.toString()}" title="#{bundle.ViewTerminTitle_pacijent1}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TerminViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

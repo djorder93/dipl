@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PacijentViewDlg" widgetVar="PacijentViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewPacijentTitle}">
+            <h:form id="PacijentViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pacijentController.selected != null}">
+                        <h:outputText value="#{bundle.ViewPacijentLabel_jmbg}"/>
+                        <h:outputText value="#{pacijentController.selected.jmbg}" title="#{bundle.ViewPacijentTitle_jmbg}"/>
+                        <h:outputText value="#{bundle.ViewPacijentLabel_ime}"/>
+                        <h:outputText value="#{pacijentController.selected.ime}" title="#{bundle.ViewPacijentTitle_ime}"/>
+                        <h:outputText value="#{bundle.ViewPacijentLabel_prezime}"/>
+                        <h:outputText value="#{pacijentController.selected.prezime}" title="#{bundle.ViewPacijentTitle_prezime}"/>
+                        <h:outputText value="#{bundle.ViewPacijentLabel_telefon}"/>
+                        <h:outputText value="#{pacijentController.selected.telefon}" title="#{bundle.ViewPacijentTitle_telefon}"/>
+                        <h:outputText value="#{bundle.ViewPacijentLabel_datumrodjenja}"/>
+                        <h:outputText value="#{pacijentController.selected.datumrodjenja}" title="#{bundle.ViewPacijentTitle_datumrodjenja}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT+2"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewPacijentLabel_doktor}"/>
+                        <h:outputText value="#{pacijentController.selected.doktor.toString()}" title="#{bundle.ViewPacijentTitle_doktor}"/>
+                       </p:panelGrid>
+                        <p:separator/>
+                        <p:tabView onTabShow="PF('PacijentViewDialog').initPosition();" dynamic="true">
+                        <p:tab title="Pregledi">
+                            <p:dataTable var="pr" paginator="true" rowKey="#{pr.pregledPK}"
+                                         rows="5"
+                                         rowsPerPageTemplate="5,10,15,20,25" value="#{pacijentController.selected.pregledList}">
+                                <p:column headerText="Naziv usluge">
+                                    <h:outputText value="#{pr.usluga.toString()}" />
+                                </p:column>
+
+                                <p:column headerText="Datum">
+                                    <h:outputText value="#{pr.datum}" />
+                                </p:column>
+
+                                <p:column headerText="Oznaka zuba" filterBy="#{pr.zub1.oznaka}" filterMatchMode="exact">
+                                    <h:outputText value="#{pr.zub1.oznaka}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Termini">
+                            <p:dataTable var="term" paginator="true" rowKey="#{term.terminPK}"
+                                         rows="5"
+                                         rowsPerPageTemplate="5,10,15,20,25" value="#{pacijentController.selected.terminList}">
+
+                                <p:column headerText="Datum">
+                                    <h:outputText value="#{term.terminPK.datum}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"  timeZone="GMT+2"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Zakazao/la">
+                                    <h:outputText value="#{term.medsestra.toString()}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                    
+                    <p:commandButton value="#{bundle.Close}" onclick="PacijentViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PregledEditDlg" widgetVar="PregledEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPregledTitle}">
+            <h:form id="PregledEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pregledController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditPregledLabel_pregledPK_id}" for="pregledPK_id" />
+                        <p:inputText id="pregledPK_id" value="#{pregledController.selected.pregledPK.id}" title="#{bundle.EditPregledTitle_pregledPK_id}" required="true" requiredMessage="#{bundle.EditPregledRequiredMessage_pregledPK_id}"/>
+                        <p:outputLabel value="#{bundle.EditPregledLabel_datum}" for="datum" />
+                        <p:calendar id="datum" pattern="MM/dd/yyyy HH:mm:ss" value="#{pregledController.selected.datum}" title="#{bundle.EditPregledTitle_datum}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditPregledLabel_pacijent1}" for="pacijent1" />
+                        <p:selectOneMenu id="pacijent1" value="#{pregledController.selected.pacijent1}" required="true" requiredMessage="#{bundle.EditPregledRequiredMessage_pacijent1}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{pacijentController.itemsAvailableSelectOne}"
+                                           var="pacijent1Item"
+                                           itemValue="#{pacijent1Item}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditPregledLabel_zub1}" for="zub1" />
+                        <p:selectOneMenu id="zub1" value="#{pregledController.selected.zub1}" required="true" requiredMessage="#{bundle.EditPregledRequiredMessage_zub1}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{zubController.itemsAvailableSelectOne}"
+                                           var="zub1Item"
+                                           itemValue="#{zub1Item}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditPregledLabel_usluga}" for="usluga" />
+                        <p:selectOneMenu id="usluga" value="#{pregledController.selected.usluga}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{uslugaController.itemsAvailableSelectOne}"
+                                           var="uslugaItem"
+                                           itemValue="#{uslugaItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pregledController.update}" value="#{bundle.Save}" update="display,:PregledListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PregledEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PregledEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
